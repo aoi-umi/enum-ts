@@ -1,4 +1,4 @@
-import { Enum } from '..';
+import { Enum } from '../lib';
 
 let enumDefine = {
     week: {
@@ -32,6 +32,10 @@ try {
     //[ 'sunday' ]
     console.log(week.getAllValue());
     //[ 0 ]
+
+    console.log(week.toArray());
+    console.log(week.toObject());
+    console.log(JSON.stringify(week));
 
     //check can srcEnum change to destEnum
     let result = status.enumChangeCheck(status.enable, status.disable);

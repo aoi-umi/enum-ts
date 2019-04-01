@@ -5,7 +5,7 @@ export type EnumInstanceObject<T1, T2> = {
     [P in keyof T1]: EnumInstance<T1, T1[P]> & T1[P]
 } & Enum<T1, T2>;
 
-class EnumInstance<T1, T2> {
+export class EnumInstance<T1, T2> {
     readonly enumName: keyof T1;
     readonly instance: EnumInstanceObject<T1, any>;
 
@@ -35,6 +35,21 @@ class EnumInstance<T1, T2> {
     @enumerable(false)
     getAllValue() {
         return this.instance.getAllValue(this.enumName);
+    }
+
+    @enumerable(false)
+    toArray() {
+        return this.instance.toArray(this.enumName);
+    }
+
+    @enumerable(false)
+    toObject() {
+        return clone(this.instance.enumDict[this.enumName]);
+    }
+
+    @enumerable(false)
+    toJSON() {
+        return clone(this.instance.enumDict[this.enumName]);
     }
 
     @enumerable(false)
@@ -88,9 +103,17 @@ export class Enum<T1, T2>{
 
     getAllValue(enumName: keyof T1, notThrowError?: boolean) {
         let enumType = this.getEnum(enumName, notThrowError);
-        let list = [];
+        return Object.values(enumType);
+    }
+
+    toArray(enumName: keyof T1, notThrowError?: boolean) {
+        let enumType = this.getEnum(enumName, notThrowError);
+        let list: { key: string, value: any }[] = [];
         for (let key in enumType) {
-            list.push(enumType[key]);
+            list.push({
+                key,
+                value: enumType[key]
+            });
         }
         return list;
     }
