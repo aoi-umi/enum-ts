@@ -9,14 +9,14 @@ let enumDefine = {
         disable: '1' as '1',
     },
     statusOperate: {
-        disable: 'disable'
+        disable: 'disableOp'
     }
 };
 let enumChangeDefine = {
     status: {
         [enumDefine.status.enable]: {
             [enumDefine.status.disable]: 'change to disable',
-            disable: 'change to disable by operate'
+            [enumDefine.statusOperate.disable]: 'change to disable by operate'
         },
     }
 };
@@ -37,6 +37,17 @@ try {
     console.log(week.toObject());
     console.log(JSON.stringify(week));
 
+    let stateT = status.getStateTable();
+    console.log(stateT);
+    /*
+    state table
+    [
+        [ '-',       'enable', 'disable' ],
+        [ 'enable',  0,        1 ],
+        [ 'disable', 0,        0 ]
+    ]
+    */
+
     //check can srcEnum change to destEnum
     let result = status.enumChangeCheck(status.enable, status.disable);
     console.log(result);
@@ -48,7 +59,7 @@ try {
 
     result = status.enumChangeCheck(status.disable, status.enable);
     //throw error: 
-    //status:[1](disable) can not change to [0](enable)
+    //status:[disable](1) can not change to [enable](0)
 } catch (e) {
     console.log(e);
 }

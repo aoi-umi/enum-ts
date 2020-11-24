@@ -71,6 +71,11 @@ export class EnumInstance<T1, T2> {
     enumChangeCheck(srcEnum, destEnum) {
         return this.instance.enumChangeCheck(this.enumName, srcEnum, destEnum);
     }
+
+    @enumerable(false)
+    getStateTable() {
+        return this.instance.getStateTable(this.enumName);
+    }
 }
 
 type EnumKey<T> = Extract<keyof T[keyof T], string>;
@@ -162,9 +167,30 @@ export class Enum<T1, T2>{
 
         if (!changeDict[srcEnum] || !changeDict[srcEnum][destEnum]) {
             throw error(stringFormat('{0} can not change to {1}',
-                `${enumType}:` + `[${srcEnum}](${srcEnumName})`,
-                `[${destEnum}](${destEnumName})`), errorConfig.ENUM_CHANGED_INVALID);
+                `${enumType}:` + `[${srcEnumName}](${srcEnum})`,
+                `[${destEnumName}](${destEnum})`), errorConfig.ENUM_CHANGED_INVALID);
         }
         return changeDict[srcEnum][destEnum];
+    }
+
+    getStateTable(enumName: keyof T1) {
+        let list = [];
+        let arr = this.toArray(enumName);
+        let keys = arr.map(ele => ele.key);
+        list.push(['-', ...keys]);
+        arr.forEach(ele => {
+            let stateList: any[] = [ele.key];
+            arr.forEach(ele2 => {
+                let state;
+                try {
+                    state = this.enumChangeCheck(enumName, ele.value, ele2.value)
+                } catch (e) {
+
+                }
+                stateList.push([undefined, null].includes(state) ? 0 : 1)
+            });
+            list.push(stateList);
+        });
+        return list;
     }
 }
