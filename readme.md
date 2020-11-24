@@ -1,6 +1,8 @@
 # enum-ts
 
+
 ## usage
+[usage](https://github.com/aoi-umi/enum-ts/blob/master/src/test/usage.ts)
 
 ```ts
 import { Enum } from 'enum-ts';

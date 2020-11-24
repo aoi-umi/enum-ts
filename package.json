@@ -1,6 +1,6 @@
 {
   "name": "enum-ts",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "enum by typescript",
   "main": "dest/lib/index.js",
   "scripts": {
